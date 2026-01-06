@@ -1,7 +1,23 @@
-import app from './app';
-import config from './config/config';
-import logger from "./config/logger";
+import { inject, injectable } from 'inversify';
+import type Application from './app';
+import type { ConfigService } from './config/config';
+import type { PodcastController } from './controllers/podcast.controller';
+import { TYPES } from './types';
 
-app.listen(config.port, () => {
-  logger.info(`🚀 Listening on port ${config.port}`);
-});
+@injectable()
+export class Server {
+  constructor(
+    @inject(TYPES.Application)
+    private readonly app: Application,
+    @inject(TYPES.Config)
+    private readonly config: ConfigService,
+    @inject(TYPES.PodcastController)
+    private readonly podcastController: PodcastController,
+  ) {}
+
+  async start() {
+    const expressApp = this.app.getApp();
+    expressApp.use('/api/podcasts', this.podcastController.router);
+    this.app.listen(this.config.getConfig().port);
+  }
+}

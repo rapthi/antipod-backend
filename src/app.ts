@@ -1,13 +1,28 @@
 import express from 'express';
+import logger from './config/logger';
 import { errorHandler } from './middlewares/error.handler';
-import podcastRoutes from './routes/podcast.routes';
 
-const app = express();
+export default class Application {
+  private readonly app: express.Application;
 
-app.use(express.json());
+  constructor() {
+    this.app = express();
+    this.setupMiddlewares();
+  }
 
-app.use('/api/podcasts', podcastRoutes);
+  getApp() {
+    return this.app;
+  }
 
-app.use(errorHandler);
+  private setupMiddlewares(): void {
+    this.app.use(express.json());
+    this.app.use(errorHandler);
+    this.app.use(express.urlencoded({ extended: true }));
+  }
 
-export default app;
+  listen(port: number) {
+    return this.app.listen(port, () =>
+      logger.info(`App listening on port ${port}`),
+    );
+  }
+}
