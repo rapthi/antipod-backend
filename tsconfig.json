@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDirs": ["./src", "./lib", "./prisma", "./generated"],
     "outDir": "./dist",
 
     "module": "commonjs",

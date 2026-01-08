@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
+import { prisma } from '../lib/prisma';
 import logger from './config/logger';
 import { container } from './di/container';
 import type { Server } from './server';
@@ -12,7 +13,12 @@ async function bootstrap() {
   await server.start();
 }
 
-bootstrap().catch((err) => {
-  logger.error('Failed to start app: ', err);
-  process.exit(1);
-});
+bootstrap()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (err) => {
+    logger.error('Failed to start app: ', err);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
