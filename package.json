@@ -6,7 +6,11 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && nodemon dist/index.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "test": "jest",
+    "lint": "npx @biomejs/biome lint",
+    "lint:fix": "npx @biomejs/biome lint --fix",
+    "lint:suppress": "npx @biomejs/biome lint --suppress"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +35,11 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "winston": "^3.19.0"
+    "@inversifyjs/http-core": "^4.9.1",
+    "@rapthi/podca-ts": "^1.0.1",
+    "inversify": "^7.10.8",
+    "reflect-metadata": "^0.2.2",
+    "winston": "^3.19.0",
+    "zod": "^4.3.5"
   }
 }

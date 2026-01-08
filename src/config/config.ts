@@ -1,15 +1,18 @@
-import dotenv from 'dotenv';
+import { injectable } from 'inversify';
 
-dotenv.config();
-
-interface Config {
+export interface Config {
   port: number;
   nodeEnv: string;
 }
 
-const config: Config = {
-  port: Number(process.env.PORT) || 3000,
-  nodeEnv: process.env.NODE_ENV || 'development',
-};
+@injectable()
+export class ConfigService {
+  private readonly config: Config = {
+    port: Number(process.env.PORT) || 3000,
+    nodeEnv: process.env.NODE_ENV || 'development',
+  };
 
-export default config;
+  public getConfig(): Config {
+    return this.config;
+  }
+}

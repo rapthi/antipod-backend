@@ -6,8 +6,10 @@ export interface AppError extends Error {
 
 export const errorHandler = (
   err: AppError,
+  // biome-ignore lint/correctness/noUnusedFunctionParameters: ignored using `--suppress`
   req: Request,
   res: Response,
+  // biome-ignore lint/correctness/noUnusedFunctionParameters: ignored using `--suppress`
   next: NextFunction,
 ) => {
   console.error(err);

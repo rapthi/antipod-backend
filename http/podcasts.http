@@ -1,0 +1,5 @@
+### GET search podcasts
+GET {{baseUrl}}/api/podcasts/search
+    ?term=Cauet
+
+###
