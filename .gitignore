@@ -280,3 +280,14 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,intellij+all,macos,linux
 
 /generated/prisma
+
+# vercel
+.vercel
+
+**/*.trace
+**/*.zip
+**/*.tar.gz
+**/*.tgz
+**/*.log
+package-lock.json
+**/*.bun
