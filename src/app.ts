@@ -1,28 +1,29 @@
-import express from 'express';
+import cors from '@elysiajs/cors';
+import swagger from '@elysiajs/swagger';
+import Elysia from 'elysia';
 import logger from './config/logger';
-import { errorHandler } from './middlewares/error.handler';
+import { podcastController } from './controllers/podcast.controller';
 
-export default class Application {
-  private readonly app: express.Application;
+export const app = new Elysia()
+  .use(cors())
+  .use(swagger())
+  .decorate('logger', logger)
+  .group('/api', (app) => app.use(podcastController))
+  .onError(({ code, error, set }) => {
+    if (code === 'VALIDATION') {
+      set.status = 400;
+      return { status: 'error', message: error.all };
+    }
 
-  constructor() {
-    this.app = express();
-    this.setupMiddlewares();
-  }
-
-  getApp() {
-    return this.app;
-  }
-
-  private setupMiddlewares(): void {
-    this.app.use(express.json());
-    this.app.use(errorHandler);
-    this.app.use(express.urlencoded({ extended: true }));
-  }
-
-  listen(port: number) {
-    return this.app.listen(port, () =>
-      logger.info(`App listening on port ${port}`),
-    );
-  }
-}
+    set.status = 500;
+    return { status: 'error', message: error };
+  })
+  .listen(
+    {
+      port: Bun.env.PORT ?? 3000,
+      maxRequestBodySize: Number.MAX_SAFE_INTEGER,
+    },
+    ({ port }) => {
+      logger.info(`Listening on port: ${port}`);
+    },
+  );
