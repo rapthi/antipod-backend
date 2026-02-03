@@ -8,7 +8,8 @@ export const app = new Elysia()
   .use(cors())
   .use(swagger())
   .decorate('logger', logger)
-  .group('/api', (app) => app.use(podcastController))
+  .group('/api', (app) =>
+    app.use(podcastController))
   .onError(({ code, error, set }) => {
     if (code === 'VALIDATION') {
       set.status = 400;
