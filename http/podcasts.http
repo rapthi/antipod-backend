@@ -3,3 +3,6 @@ GET {{baseUrl}}/api/podcasts/search
     ?term=Cauet
 
 ###
+### GET podcast by id
+
+https://itunes.apple.com/lookup?id=1811081425
