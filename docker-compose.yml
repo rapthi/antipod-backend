@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: antipod-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: antipod
+      POSTGRES_PASSWORD: antipod
+      POSTGRES_DB: antipod
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U antipod -d antipod"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
